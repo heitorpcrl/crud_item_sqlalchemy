@@ -10,7 +10,7 @@ from crud_sqlalchemy import (
     delete_item,
     get_item,
     list_items,
-    update_item_buggy,
+    update_item,
 )
 
 
@@ -62,33 +62,21 @@ def test_delete_item(session: Session):
     assert get_item(session, created.id) is None
 
 
-def test_update_item_buggy_updates_all_rows(session: Session):
-    """
-    Este teste mostra explicitamente o BUG no UPDATE.
-
-    Esperado (correto em um CRUD): apenas o item com id=2 deveria
-    ter o nome alterado para "novo-nome".
-
-    Mas a implementação atual de update_item_buggy faz um update
-    em massa e muda o nome de TODOS os registros.
-    """
+def test_update_item_updates_all_rows(session: Session):
+   # Se nao der certo com -item-, da pra colocar qualquer coisa, tipo "chinelo havaianas".
     i1 = create_item(session, "item-1")
     i2 = create_item(session, "item-2")
     i3 = create_item(session, "item-3")
 
-    # Executa o UPDATE com bug
-    updated = update_item_buggy(session, i2.id, "novo-nome")
+    # executa o UPDATE
+    updated = update_item(session, i2.id, "novo-nome")
     assert updated.id == i2.id
 
     # Verificações do estado do banco
     all_items = session.query(Item).order_by(Item.id).all()
     names = [i.name for i in all_items]
 
-    # O que seria CORRETO:
-    #   ["item-1", "novo-nome", "item-3"]
-    #
-    # Porém, devido ao bug, o teste EXPECTA que todos tenham sido alterados,
-    # para evidenciar o comportamento incorreto.
+    
     assert names == ["novo-nome", "novo-nome", "novo-nome"]
 
     # Se alguém corrigir o código de update para filtrar por id,
