@@ -13,7 +13,6 @@ from crud_sqlalchemy import (
     update_item,
 )
 
-
 @pytest.fixture()
 def session() -> Session:
     """
