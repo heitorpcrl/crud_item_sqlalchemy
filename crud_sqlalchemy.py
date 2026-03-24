@@ -67,7 +67,7 @@ def list_items(session: Session) -> List[ItemDTO]:
 
 
 # UPDATE - IMPLEMENTAÇÃO COM BUG PROPOSITAL
-def update_item_buggy(session: Session, item_id: int, new_name: str) -> ItemDTO:
+def update_item(session: Session, item_id: int, new_name: str) -> ItemDTO:
    
     if not new_name or not new_name.strip():
         raise ValueError("new_name must not be empty")
@@ -102,7 +102,7 @@ __all__ = [
     "create_item",
     "get_item",
     "list_items",
-    "update_item_buggy",
+    "update_item",
     "delete_item",
 ]
 
