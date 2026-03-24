@@ -69,16 +69,7 @@ def list_items(session: Session) -> List[ItemDTO]:
 
 # UPDATE - IMPLEMENTAÇÃO COM BUG PROPOSITAL
 def update_item_buggy(session: Session, item_id: int, new_name: str) -> ItemDTO:
-    """
-    Atualiza o nome de um item, porém com um ERRO proposital:
-
-    - Em vez de atualizar apenas o registro com o id informado,
-      a query abaixo usa update em massa sem filtro adequado,
-      resultando em TODOS os registros tendo o nome alterado.
-
-    Isso é útil para trabalhos acadêmicos sobre testes e
-    detecção de bugs em operações de UPDATE.
-    """
+   
     if not new_name or not new_name.strip():
         raise ValueError("new_name must not be empty")
 
@@ -87,11 +78,7 @@ def update_item_buggy(session: Session, item_id: int, new_name: str) -> ItemDTO:
     if not item:
         raise ValueError(f"item with id={item_id} not found")
 
-    # BUG PRINCIPAL:
-    # A chamada abaixo não filtra por item_id.
-    # Em vez de algo como:
-    #   session.query(Item).filter(Item.id == item_id).update(...)
-    # ela aplica o update para TODAS as linhas da tabela.
+ 
     session.query(Item).update({"name": new_name.strip()})
     session.commit()
 
