@@ -9,7 +9,6 @@ from sqlalchemy.orm import declarative_base, sessionmaker, Session
 
 Base = declarative_base()
 
-
 class Item(Base):
     __tablename__ = "items"
 
